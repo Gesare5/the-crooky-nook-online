@@ -1,7 +1,12 @@
 import React from 'react';
-import { alpha, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, TextField, Typography } from '@material-ui/core';
+import { alpha, Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, MobileStepper, TextField, Typography, useTheme } from '@material-ui/core';
 import clsx from 'clsx';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import { quotes } from '../components/bookQuotes';
 // import Link from 'next/link';
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles({
     checkboxDiv: {
@@ -23,7 +28,7 @@ const useStyles = makeStyles({
         padding: '1rem'
     },
     googleBtn: {
-        border: '1px solid #6C8E7A',
+        border: '1px solid #164263',
         marginBottom: '.5rem',
         height: 48,
     },
@@ -55,32 +60,39 @@ const useStyles = makeStyles({
         marginBottom: '.5rem',
         fontSize: 60,
     },
-    review: {
-        backgroundColor: alpha('#f9f9f9', 0.4),
-        backdropFilter: 'blur(5px)',
-        border: `2px solid ${alpha('#f9f9f9', 0.7)}`,
-        width: '85%',
-        height: 350,
-        position: 'absolute',
-        bottom: '5%',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '20px 14px'
-    },
     signIn: {
-        backgroundColor: '#6C8E7A',
+        backgroundColor: '#003E42',
         color: '#f9f9f9',
         margin: '1rem 0rem',
         height: 46,
         '&:hover': {
             color: 'rgba(0,0,0)'
         }
-    }
+    },
+    quoteDiv: {
+        backgroundColor: alpha('#f9f9f9', 0.3),
+        backdropFilter: 'blur(5px)',
+        border: `2px solid ${alpha('#f9f9f9', 0.6)}`,
+        width: '85%',
+        height: 350,
+        position: 'absolute',
+        bottom: '5%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '24px'
+    },
 })
 
 const Login = () => {
-
+    const [activeStep, setActiveStep] = React.useState(0);
+    const maxSteps = quotes.length;
     const classes = useStyles();
+    const theme = useTheme();
+
+    const handleStepChange = (step: number) => {
+        setActiveStep(step);
+    };
 
     return (
         <Grid container className={classes.container} >
@@ -127,13 +139,37 @@ const Login = () => {
             </Grid>
             <Grid item md={6} className={classes.imageDiv}>
                 <img src="/images/toa-heftiba.jpg" alt="" height='100%' width='100%' style={{ objectFit: 'cover' }} />
-                <div className={classes.review}>
-
-                    <Typography variant='h4' style={{ color: '#fff' }}>Join us in our magical world of books. From countless selection of all famous genres; to much more niche ecosystems..</Typography>
-                    {/* We understand your need and we are here to indulge you */}
+                <div className={classes.quoteDiv}>
+                    <AutoPlaySwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={activeStep}
+                        onChangeIndex={handleStepChange}
+                        enableMouseEvents
+                        interval={5000}
+                    >
+                        {quotes.map((quote, index) => (
+                            <div key={quote.id}>
+                                {Math.abs(activeStep - index) <= 2 ? (
+                                    <>
+                                        <Typography variant='h4' style={{ color: '#fff' }}>"{quote.quote}"</Typography>
+                                        <Typography variant='h5' style={{ color: '#fff', textAlign: 'right', marginTop: 10 }}>— {quote.author}</Typography>
+                                    </>
+                                ) : null}
+                            </div>
+                        ))}
+                    </AutoPlaySwipeableViews>
+                    <MobileStepper
+                        steps={maxSteps}
+                        position="static"
+                        variant="dots"
+                        activeStep={activeStep}
+                        nextButton={<></>}
+                        backButton={<></>}
+                        style={{ background: 'transparent' }}
+                    />
                 </div>
             </Grid>
-        </Grid>
+        </Grid >
     );
 };
 

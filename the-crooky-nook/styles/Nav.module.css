@@ -1,7 +1,7 @@
 .nav {
     height: 80px;
     padding: 10px;
-    background: transparent;
+    background-color: transparent;
     position: sticky;
     position: fixed;
     top: 0;
