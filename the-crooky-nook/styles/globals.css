@@ -1,0 +1,46 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Mulish', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: black;
+  background: #F9F9F9;
+}
+
+/* a {
+  color: inherit;
+  text-decoration: none;
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+/* 
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    color: black;
+    background: #F9F9F9;
+  }
+} */
+
+@font-face {
+  font-family: "Brachella Drumal";
+  src: url("/asset/BarchellaDrumal-d90AZ.otf");
+}
+
+@font-feature-values "Brachella Drumal" {
+  @swash {
+    fancy: 2;
+  }
+}
+
+.variant {
+  font-feature-settings: "swsh" 1;
+  font-variant-alternates: swash(fancy);
+}
